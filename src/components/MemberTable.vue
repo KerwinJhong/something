@@ -1,0 +1,95 @@
+<template>
+  <table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark text-center">
+      <tr>
+        <th>名稱</th>
+        <th>手機</th>
+        <th>消費次數</th>
+        <th>刪除</th>
+        <th>權限</th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      <tr v-for="user in users" :key="user.id">
+        <th>
+          <router-link
+            v-if="user.Profile"
+            :to="{path:'/users', params:{id:user.id}}"
+          >{{ user.Profile.name }}</router-link>
+          <router-link v-else :to="{path:'/users', params:{id:user.id}}">{{ "User" }}</router-link>
+        </th>
+        <td height="50px">
+          <div class="user-name">{{ user.phone }}</div>
+        </td>
+        <td>
+          <div class="user-name">{{ user.MemberOrders.length }}</div>
+        </td>
+        <td>
+          <button
+            v-if="user.id !== currentUser"
+            type="button"
+            class="btn btn-warning"
+            @click.stop.prevent="deleteUser(user.id)"
+          >刪除</button>
+        </td>
+        <td>
+          <button
+            v-if="user.id !== currentUser"
+            type="button"
+            class="btn btn-danger"
+            @click.stop.prevent="toggleIsAdmin(user.id)"
+          >
+            <template v-if="user.role === `admin`">{{ user.role }}</template>
+            <template v-else>使用者</template>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+
+<script>
+export default {
+  props: {
+    initialUsers: {
+      type: Array
+    }
+  },
+  data() {
+    return {
+      users: this.initialUsers,
+      currentUser: this.$store.state.currentUser.id
+    };
+  },
+  methods: {
+    deleteUser(userId) {
+      this.$emit("after-delete-user", userId);
+    },
+    toggleIsAdmin(userId) {
+      this.$emit("after-toggle-is-admin", userId);
+    }
+  },
+  watch: {
+    initialUsers(users) {
+      this.users = {};
+      this.users = {
+        ...this.users,
+        ...users
+      };
+    }
+  }
+};
+</script>
+
+<style scoped>
+.form-control {
+  display: inline-block;
+  max-width: 80%;
+  margin-right: 10px;
+}
+.table td,
+.table th {
+  padding: 0.4rem;
+  vertical-align: middle;
+}
+</style>
