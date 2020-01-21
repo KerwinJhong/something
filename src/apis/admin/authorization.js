@@ -8,11 +8,11 @@ export default {
     })
   },
   signUp(data) {
-    return apiHelper.post("/signUp", {
+    return apiHelper.post('/signup', {
       ...data
     })
   },
   getCurrentUser() {
-    return apiHelper.get(`/member/user`)
+    return apiHelper.get(`/user`)
   }
 }

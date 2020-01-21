@@ -1,152 +1,279 @@
 <template>
-  <div class="container py-5">
-    <form class="w-100" @submit.stop.prevent="handleSubmit">
-      <div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+  <div class="row d-flex justify-content-center" style="background-color: #F0E8DD;height: 100%;">
+    <h1 class="col-12 pt-3 text-center">Sign Up</h1>
+    <div class="bg-image col-6 max-width"></div>
+    <form class="w-100 col-6 max-width" @submit.stop.prevent="handleSubmit">
+      <div class="row">
+        <h3 class="col-12 my-3 text-center">會員資料</h3>
+        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.name.$error}">
+          <label for="name">Name</label>
+          <input
+            @input="$v.name.$touch"
+            :disabled="isProcessing"
+            maxlength="20"
+            minlength="1"
+            id="name"
+            v-model="name"
+            name="name"
+            type="text"
+            class="form-control"
+            placeholder="name"
+            required
+            autofocus
+          />
+          <small v-if="$v.name.$error" class="text-danger">長度介於 1 - 20</small>
+        </div>
+
+        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.phone.$error}">
+          <label for="name">Phone</label>
+          <input
+            @input="$v.phone.$touch"
+            :disabled="isProcessing"
+            maxlength="15"
+            minlength="8"
+            id="phone"
+            v-model="phone"
+            name="phone"
+            type="number"
+            class="form-control"
+            placeholder="phone"
+            required
+            autofocus
+          />
+          <small v-if="$v.phone.$error" class="text-danger">長度介於 8 - 15</small>
+        </div>
+
+        <div
+          class="form-label-group mb-3 col-6"
+          :class="{'form-group--error': $v.email.$error && !$v.email.$pending}"
+        >
+          <label for="email">Email</label>
+          <input
+            @input="$v.email.$touch"
+            :disabled="isProcessing"
+            id="email"
+            v-model="email"
+            name="email"
+            type="email"
+            class="form-control"
+            placeholder="email"
+            required
+            autofocus
+          />
+          <small v-if="!$v.email.email && $v.email.$dirty" class="text-danger">請輸入格式正確的電子信箱</small>
+          <small v-if="!$v.email.required && $v.email.$dirty" class="text-danger">電子信箱必填</small>
+        </div>
+
+        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.account.$error}">
+          <label for="name">Account</label>
+          <input
+            @input="$v.account.$touch"
+            :disabled="isProcessing"
+            maxlength="30"
+            minlength="6"
+            id="account"
+            v-model="account"
+            name="account"
+            type="text"
+            class="form-control"
+            placeholder="account"
+            required
+            autofocus
+          />
+          <small v-show="$v.account.$error" class="text-danger">長度介於 6 - 30</small>
+        </div>
+
+        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.password.$error}">
+          <label for="password">Password</label>
+          <input
+            @input="$v.password.$touch"
+            :disabled="isProcessing"
+            maxlength="30"
+            minlength="8"
+            id="password"
+            v-model="password"
+            name="password"
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            required
+            autofocus
+            autocomplete
+          />
+          <small v-if="$v.password.$error" class="text-danger">長度介於 8 -30</small>
+        </div>
+
+        <div
+          class="form-label-group mb-3 col-6"
+          :class="{'form-group--error': $v.passwordCheck.$error}"
+        >
+          <label for="password-check">Password Check</label>
+          <input
+            @input="$v.passwordCheck.$touch"
+            :disabled="isProcessing"
+            maxlength="30"
+            minlength="8"
+            id="password-check"
+            v-model="passwordCheck"
+            name="passwordCheck"
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            required
+            autofocus
+            autocomplete
+          />
+          <small v-if="$v.passwordCheck.$error" class="text-danger">輸入的兩組密碼須相同</small>
+        </div>
+
+        <div class="col-12 text-center form-footer pb-2">
+          <button
+            class="btn btn-lg btn-primary btn-block mb-3"
+            :disabled="isProcessing || $v.$invalid"
+            type="submit"
+          >{{ this.isProcessing ? "處理中..." : "送出" }}</button>
+          <router-link to="/signin">已經是會員</router-link>
+        </div>
       </div>
-
-      <div class="form-label-group mb-2">
-        <label for="name">Account</label>
-        <input
-          id="account"
-          v-model="account"
-          name="account"
-          type="text"
-          class="form-control"
-          placeholder="account"
-          required
-          autofocus
-        />
-      </div>
-
-      <div class="form-label-group mb-2">
-        <label for="name">Phone</label>
-        <input
-          id="phone"
-          v-model="phone"
-          name="phone"
-          type="text"
-          class="form-control"
-          placeholder="phone"
-          required
-          autofocus
-        />
-      </div>
-
-      <div class="form-label-group mb-2">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          v-model="email"
-          name="email"
-          type="email"
-          class="form-control"
-          placeholder="email"
-          required
-        />
-      </div>
-
-      <div class="form-label-group mb-3">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          v-model="password"
-          name="password"
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          required
-        />
-      </div>
-
-      <div class="form-label-group mb-3">
-        <label for="password-check">Password Check</label>
-        <input
-          id="password-check"
-          v-model="passwordCheck"
-          name="passwordCheck"
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          required
-        />
-      </div>
-
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Submit</button>
-
-      <div class="text-center mb-3">
-        <p>
-          <router-link to="/signin">Sign In</router-link>
-        </p>
-      </div>
-
-      <p class="mt-5 mb-3 text-muted text-center">© 2017-2018</p>
     </form>
+    <div class="col-12 py-3"></div>
   </div>
 </template>
 
 <script>
-import adminAuthorizationAPI from "./../apis/admin/authorization";
+import adminAuthorizationAPI from "../apis/admin/authorization";
+
+import {
+  required,
+  email,
+  minLength,
+  maxLength,
+  sameAs
+} from "vuelidate/lib/validators";
 
 export default {
-  /* eslint-disable */
+  name: "SignUp",
   data() {
     return {
+      account: "",
       name: "",
+      phone: "",
       email: "",
       password: "",
       passwordCheck: "",
       isProcessing: false
     };
   },
+  validations: {
+    account: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(30)
+    },
+    name: {
+      required,
+      minLength: minLength(1),
+      maxLength: maxLength(20)
+    },
+    phone: {
+      required,
+      minLength: minLength(8),
+      maxLength: maxLength(15)
+    },
+    email: {
+      required,
+      email
+    },
+    password: {
+      required,
+      minLength: minLength(8),
+      maxLength: maxLength(30)
+    },
+    passwordCheck: {
+      sameAs: sameAs("password")
+    }
+  },
   methods: {
-    handleSubmit() {
-      if (!this.account || !this.password || !this.phone || this.email) {
-        Toast.fire({
-          type: "warning",
-          title: "請填完所有必須資料"
-        });
-        return;
-      }
+    async handleSubmit() {
+      try {
+        this.isProcessing = true;
+        if (!this.account || !this.password || !this.phone || !this.email) {
+          this.$swal({
+            type: "warning",
+            title: "請填完所有必須資料"
+          });
+          return;
+        }
+        if (this.password !== this.passwordCheck) {
+          this.$swal({
+            type: "warning",
+            title: "密碼驗證不相同"
+          });
+          return;
+        }
 
-      this.isProcessing = true;
-
-      adminAuthorizationAPI
-        .signUp({
+        const response = await adminAuthorizationAPI.signUp({
           account: this.account,
+          name: this.name,
           phone: this.phone,
           email: this.email,
           password: this.password,
           passwordCheck: this.passwordCheck
-        })
-        .then(response => {
-          // 取得 API 請求後的資料
-          const { data } = response;
-          console.log(data);
-          // 成功登入後轉址到登入
-          this.$router.push("/signin");
-        })
-        .catch(error => {
-          // 顯示錯誤提示
-          Toast.fire({
+        });
+        const { data, statusText } = response;
+        if (statusText !== "OK") {
+          this.$swal({
             type: "warning",
-            title: "表單輸入有誤"
+            title: data.msg
           });
-          this.isProcessing = false;
-          console.log(error);
+          throw new Error(statusText);
+        }
+
+        this.$swal({
+          toast: true,
+          position: "top",
+          showConfirmButton: false,
+          timer: 3000,
+          type: "success",
+          title: data.msg
         });
 
-      const data = JSON.stringify({
-        account: this.account,
-        phone: this.phone,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck
-      });
-
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("date", data);
+        this.$router.push("sign-in");
+      } catch (error) {
+        this.$swal({
+          type: "warning",
+          title: "註冊失敗，請稍後再試"
+        });
+        this.isProcessing = false;
+        // eslint-disable-next-line
+        console.log("error", error);
+      }
     }
   }
 };
 </script>
+
+<style scoped>
+.bg-image {
+  background-image: url(https://images.pexels.com/photos/2638019/pexels-photo-2638019.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 120px 0 0 120px;
+}
+.max-width {
+  max-width: 450px;
+  min-height: 450px;
+  border: 1px solid #dee2e6;
+}
+.form-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

@@ -6,7 +6,9 @@ import './assets/application.css'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { VueMasonryPlugin } from 'vue-masonry';
+import Vuelidate from 'vuelidate'
 
+Vue.use(Vuelidate)
 Vue.use(VueMasonryPlugin)
 Vue.use(VueSweetalert2);
 Vue.config.productionTip = false
