@@ -237,7 +237,7 @@
 </template>
 
 <script>
-import adminAuthorizationAPI from "../../apis/admin/authorization";
+import adminAuthorizationAPI from "../../apis/main/authorization";
 import { timeFromFilter, emptyImageFilter } from "../../utils/mixins";
 import {
   required,

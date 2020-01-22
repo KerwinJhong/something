@@ -12,12 +12,16 @@
       :to="{name: 'admin-day-orders', query: { state: this.unpaid }}"
       class="mr-3"
     >未結帳({{unpaidLength}})</router-link>
-    <template>
-      <router-link :to="{name: 'admin-profile-edit'}" class="mr-3">
+    <div class="dropdown dropleft mr-3 d-inline-block">
+      <div id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img class="userImg" :src="user.avatar" alt />
-      </router-link>
-      <button type="button" class="btn btn-sm btn-warning my-2 my-sm-0" @click="logout">登出</button>
-    </template>
+      </div>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuUser">
+        <router-link class="dropdown-item" :to="{name: 'admin-profile-edit'}">編輯會員資料</router-link>
+        <router-link class="dropdown-item" :to="{name: 'admin-password-edit'}">設定新密碼</router-link>
+      </div>
+    </div>
+    <button type="button" class="btn btn-sm btn-warning my-2 my-sm-0" @click="logout">登出</button>
   </nav>
 </template>
 
@@ -39,7 +43,7 @@ export default {
       unpaidLength: 0,
       pendingLoading: true,
       unpaidLoading: true,
-      isConnected: false,
+      isConnected: false
     };
   },
   created() {

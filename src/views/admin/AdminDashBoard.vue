@@ -94,7 +94,8 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-
+// eslint-disable-next-line
+        console.log("data", data);
         for (var productprop in data.hotProducts) {
           this.hotProducts.push(data.hotProducts[productprop]);
         }
@@ -105,9 +106,14 @@ export default {
           this.hotMembers.push(data.hotMembers[memberrop]);
         }
 
+        this.hotProducts.push({name:"其他",count:data.otherProducts});
+        this.hotTags.push({name:"其他",count:data.otherTags});
+        this.hotMembers.push({name:"其他",count:data.otherMembers});
+
         this.hotProducts.map((e, index) => (e.id = index + 1));
         this.hotTags.map((e, index) => (e.id = index + 1));
         this.hotMembers.map((e, index) => (e.id = index + 1));
+
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;

@@ -129,6 +129,12 @@ const routes = [
       import ('../views/admin/AdminProfileEdit.vue'),
     beforeEnter: authentication.isAdmin
   }, {
+    path: '/admin/password/edit',
+    name: 'admin-password-edit',
+    component: () =>
+      import ('../views/admin/AdminPasswordEdit.vue'),
+    beforeEnter: authentication.isAdmin
+  }, {
     path: '*',
     name: 'not-found',
     component: () =>

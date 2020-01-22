@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import adminAuthorizationAPI from '../apis/admin/authorization'
+import adminAuthorizationAPI from '../apis/main/authorization'
 
 Vue.use(Vuex)
 

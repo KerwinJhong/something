@@ -55,7 +55,7 @@
 
 <script>
 import store from "../store";
-import adminAuthorizationAPI from "../apis/admin/authorization";
+import adminAuthorizationAPI from "../apis/main/authorization";
 
 export default {
   name: "SignIn",
@@ -82,7 +82,7 @@ export default {
 
         // send log in form to API
         const response = await adminAuthorizationAPI.signIn({
-          username: this.account,
+          account: this.account,
           password: this.password
         });
 

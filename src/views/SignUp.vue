@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import adminAuthorizationAPI from "../apis/admin/authorization";
+import adminAuthorizationAPI from "../apis/main/authorization";
 
 import {
   required,

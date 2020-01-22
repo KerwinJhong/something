@@ -27,7 +27,7 @@
                   <button
                     class="btn btn-outline-success mx-2"
                     type="submit"
-                    :disabled="searchingUser || userPhone === ``"
+                    :disabled="searchingUser || userPhone.trim() === ``"
                     @click.stop.prevent="searchUser"
                   >搜尋會員</button>
                   <button

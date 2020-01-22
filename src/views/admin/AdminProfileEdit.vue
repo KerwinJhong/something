@@ -1,9 +1,9 @@
 <template>
-  <div style="background-color: #F0E8DD;height: 100%;">
-    <div class="container">
+  <div class="box-center" style="background-color: #F0E8DD;height: 100%;">
+    <div class="container border border-secondary" style="width: 500px;border-radius: 5%;">
       <Spinner v-if="isLoading" />
       <template v-else>
-        <h1 class="pt-3 text-center">會員資料</h1>
+        <h1 class="py-3 text-center">會員資料</h1>
         <form class="row" @submit.stop.prevent="handleSubmit">
           <div class="form-group col-6">
             <img :src="avatar | emptyImage" class="user-avatar" width="150" height="150" />
@@ -15,28 +15,22 @@
               accept="image/*"
               @change="handleFileChange"
               class="align-bottom"
-              :disabled="isProcessing"
+              :disabled="isProcessing || !editing"
             />
           </div>
           <div class="form-group col-6 text-right">
             <button
-              class="btn btn-primary p-3 mr-5"
-              :disabled="isProcessing || $v.$invalid"
-              type="submit"
-            >{{ this.isProcessing ? "處理中..." : "送出" }}</button>
-
-            <button
-              class="btn btn-primary p-3"
+              class="btn btn-primary px-4 py-2"
               :disabled="isProcessing"
-              @click.stop.prevent="$router.back()"
-            >回上一頁</button>
+              @click.stop.prevent="edit()"
+            >{{ this.editing ? "取消" : "編輯" }}</button>
           </div>
 
           <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.name.$error}">
             <label for="name">Name</label>
             <input
               @input="$v.name.$touch"
-              :disabled="isProcessing"
+              :disabled="isProcessing || !editing"
               maxlength="20"
               minlength="1"
               id="name"
@@ -55,7 +49,7 @@
             <label for="name">Phone</label>
             <input
               @input="$v.phone.$touch"
-              :disabled="isProcessing"
+              :disabled="isProcessing || !editing"
               maxlength="15"
               minlength="8"
               id="phone"
@@ -77,7 +71,7 @@
             <label for="email">Email</label>
             <input
               @input="$v.email.$touch"
-              :disabled="isProcessing"
+              :disabled="isProcessing || !editing"
               id="email"
               v-model="email"
               name="email"
@@ -98,7 +92,7 @@
             <label for="name">Account</label>
             <input
               @input="$v.account.$touch"
-              :disabled="isProcessing"
+              :disabled="isProcessing || !editing"
               maxlength="30"
               minlength="6"
               id="account"
@@ -112,51 +106,18 @@
             />
             <small v-show="$v.account.$error" class="text-danger">長度介於 6 - 30</small>
           </div>
-
-          <div
-            class="form-label-group mb-3 col-6"
-            :class="{'form-group--error': $v.password.$error}"
-          >
-            <label for="password">Password</label>
-            <input
-              @input="$v.password.$touch"
+          <div class="col-12 pb-4">
+            <button
+              class="btn btn-primary w-50 p-2"
               :disabled="isProcessing"
-              maxlength="30"
-              minlength="8"
-              id="password"
-              v-model="password"
-              name="password"
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              required
-              autofocus
-              autocomplete
-            />
-            <small v-if="$v.password.$error" class="text-danger">長度介於 8 -30</small>
-          </div>
+              @click.stop.prevent="$router.back()"
+            >回上一頁</button>
 
-          <div
-            class="form-label-group mb-3 col-6"
-            :class="{'form-group--error': $v.passwordCheck.$error}"
-          >
-            <label for="password-check">Password Check</label>
-            <input
-              @input="$v.passwordCheck.$touch"
-              :disabled="isProcessing"
-              maxlength="30"
-              minlength="8"
-              id="password-check"
-              v-model="passwordCheck"
-              name="passwordCheck"
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              required
-              autofocus
-              autocomplete
-            />
-            <small v-if="$v.passwordCheck.$error" class="text-danger">輸入的兩組密碼須相同</small>
+            <button
+              class="btn btn-primary w-50 p-2"
+              :disabled="isProcessing || $v.$invalid"
+              type="submit"
+            >{{ this.isProcessing ? "處理中..." : "送出" }}</button>
           </div>
         </form>
       </template>
@@ -166,7 +127,7 @@
 
 <script>
 import adminMemberAPI from "../../apis/admin/member";
-import adminAuthorizationAPI from "../../apis/admin/authorization";
+import adminAuthorizationAPI from "../../apis/main/authorization";
 import Spinner from "../../components/spinner/Spinner";
 import { emptyImageFilter } from "../../utils/mixins";
 
@@ -174,8 +135,7 @@ import {
   required,
   email,
   minLength,
-  maxLength,
-  sameAs
+  maxLength
 } from "vuelidate/lib/validators";
 
 export default {
@@ -188,12 +148,16 @@ export default {
     return {
       account: "",
       phone: "",
-      password: "",
-      passwordCheck: "",
       name: "",
       email: "",
       avatar: "",
+      saveAccount: "",
+      savePhone: "",
+      saveName: "",
+      saveEmail: "",
+      saveAvatar: "",
       isLoading: true,
+      editing: false,
       isProcessing: false
     };
   },
@@ -216,14 +180,6 @@ export default {
     email: {
       required,
       email
-    },
-    password: {
-      required,
-      minLength: minLength(8),
-      maxLength: maxLength(30)
-    },
-    passwordCheck: {
-      sameAs: sameAs("password")
     }
   },
   created() {
@@ -257,12 +213,30 @@ export default {
           this.name = data.user.Profile.name;
           this.email = data.user.Profile.email;
           this.avatar = data.user.Profile.avatar;
+
+          this.saveAccount = data.user.account;
+          this.savePhone = data.user.phone;
+          this.saveName = data.user.Profile.name;
+          this.saveEmail = data.user.Profile.email;
+          this.saveAvatar = data.user.Profile.avatar;
           this.isLoading = false;
         }
       } catch (error) {
         this.isLoading = false;
         // eslint-disable-next-line
         console.log("error", error);
+      }
+    },
+    edit() {
+      if (this.editing) {
+        this.account = this.saveAccount;
+        this.phone = this.savePhone;
+        this.name = this.saveName;
+        this.email = this.saveEmail;
+        this.avatar = this.saveAvatar;
+        this.editing = false;
+      } else {
+        this.editing = true;
       }
     },
     handleFileChange(e) {
@@ -275,28 +249,13 @@ export default {
     async handleSubmit() {
       try {
         this.isProcessing = true;
-        if (!this.account || !this.password || !this.phone || !this.email) {
-          this.$swal({
-            icon: "warning",
-            title: "請填完所有必須資料"
-          });
-          return;
-        }
-        if (this.password !== this.passwordCheck) {
-          this.$swal({
-            icon: "warning",
-            title: "密碼驗證不相同"
-          });
-          return;
-        }
 
         const response = await adminAuthorizationAPI.signUp({
           account: this.account,
           name: this.name,
           phone: this.phone,
-          email: this.email,
-          password: this.password,
-          passwordCheck: this.passwordCheck
+          avatar: this.avatar,
+          email: this.email
         });
         const { data, statusText } = response;
         if (statusText !== "OK") {
@@ -335,15 +294,11 @@ export default {
 .user-avatar {
   border-radius: 30%;
 }
-.max-width {
-  max-width: 450px;
-  min-height: 450px;
-  border: 1px solid #dee2e6;
-}
-.form-footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+.box-center {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
