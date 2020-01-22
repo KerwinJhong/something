@@ -11,5 +11,13 @@ module.exports = {
         `
       }
     }
+  },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://recus.herokuapp.com/'
+      }
+    },
+    disableHostCheck: true
   }
 }
