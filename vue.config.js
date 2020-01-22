@@ -1,6 +1,6 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ?
-    '/lit-eyrie-37404/' : '/',
+    '/something/' : '/',
   css: {
     loaderOptions: {
       sass: {
