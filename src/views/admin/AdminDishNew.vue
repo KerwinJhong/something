@@ -45,7 +45,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: "成功建立菜單",
           text: ""
         });
@@ -56,7 +56,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "建立菜單失敗，請稍後再試",
           text: ""
         });

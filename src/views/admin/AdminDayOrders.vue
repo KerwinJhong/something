@@ -87,7 +87,7 @@ export default {
       } catch (error) {
         this.isLoading = false;
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line
@@ -104,13 +104,13 @@ export default {
         }
         this.orders = this.orders.filter(order => order.id !== orderId);
         this.$swal({
-          type: "success",
+          icon: "success",
           title: data.msg
         });
         this.isProcessing = false;
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         this.isProcessing = false;
@@ -131,7 +131,7 @@ export default {
         );
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line

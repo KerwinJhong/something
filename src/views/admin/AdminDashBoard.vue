@@ -112,7 +112,7 @@ export default {
       } catch (error) {
         this.isLoading = false;
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line
@@ -130,7 +130,7 @@ export default {
         console.log("data", data);
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line

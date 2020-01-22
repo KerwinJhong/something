@@ -1,9 +1,9 @@
 import { apiHelper } from '../../utils/helpers'
 
 export default {
-  signIn({ account, password }) {
+  signIn({ username, password }) {
     return apiHelper.post('/signin', {
-      account,
+      username,
       password
     })
   },

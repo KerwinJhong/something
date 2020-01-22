@@ -246,7 +246,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: "未找到會員",
             text: ""
           });
@@ -277,14 +277,14 @@ export default {
         this.isProcessing = true;
         if (!this.account || !this.password || !this.phone || !this.email) {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "請填完所有必須資料"
           });
           return;
         }
         if (this.password !== this.passwordCheck) {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "密碼驗證不相同"
           });
           return;
@@ -301,7 +301,7 @@ export default {
         const { data, statusText } = response;
         if (statusText !== "OK") {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: data.msg
           });
           throw new Error(statusText);
@@ -312,14 +312,14 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: data.msg
         });
 
         this.$router.push("sign-in");
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "註冊失敗，請稍後再試"
         });
         this.isProcessing = false;

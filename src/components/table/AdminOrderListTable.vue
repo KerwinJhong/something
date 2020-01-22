@@ -73,7 +73,7 @@ export default {
       this.$swal
         .fire({
           title: "<h1>請輸入桌號</h1>",
-          type: "info",
+          icon: "info",
           input: "number",
           html: "",
           showCloseButton: true,
@@ -127,14 +127,14 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: "成功新增清單",
           text: ""
         });
         this.isProcessing = false;
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "未新增清單"
         });
         // eslint-disable-next-line

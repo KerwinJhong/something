@@ -2,7 +2,6 @@
   <nav class="text-right">
     <h1 class="d-inline float-left">{{this.initialTitle}}</h1>
 
-    <!-- <p class="d-inline-block text-capitalize mr-3">{{this.connection}}</p> -->
     <p class="d-inline-block text-capitalize mr-3">Hi,{{user.name}}</p>
     <router-link :to="{name: 'admin-dash-board'}" class="mr-3">儀錶板</router-link>
     <router-link
@@ -24,7 +23,6 @@
 
 <script>
 import adminOrderAPI from "../../apis/admin/order";
-//import io from "socket.io-client";
 
 export default {
   props: {
@@ -41,29 +39,13 @@ export default {
       unpaidLength: 0,
       pendingLoading: true,
       unpaidLoading: true,
-      // socket setting
       isConnected: false,
-      connection: "no connection"
-      //socket: io("http://localhost:3000")
     };
   },
   created() {
-    // this.fetchPendingNums();
-    // this.fetchUnpaidNums();
     this.user = this.$store.state.currentUser;
   },
-  mounted() {
-    // socket
-    // this.socket.on("status", data => {
-    //   //this.isConnected = true;
-    //   this.connection = data;
-    // });
-    // this.socket.on("order nums", data => {
-    //   this.pendingLength = data.pending;
-    //   this.unpaidLength = data.unpaid;
-    //   this.socket.disconnect();
-    // });
-  },
+  mounted() {},
   methods: {
     logout() {
       this.$store.commit("revokeAuthentication");
@@ -76,19 +58,13 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-        // if (state === "pending") {
-        //   this.pendingLength = data.orders.length;
-        // }
-        // if (state === "unpaid") {
-        //   this.unpaidLength = data.orders.length;
-        // }
 
         this.pendingLength = data;
         this.pendingLoading = false;
       } catch (error) {
         this.pendingLoading = false;
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line
@@ -103,19 +79,13 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-        // if (state === "pending") {
-        //   this.pendingLength = data.orders.length;
-        // }
-        // if (state === "unpaid") {
-        //   this.unpaidLength = data.orders.length;
-        // }
 
         this.unpaidLength = data;
         this.unpaidLoading = false;
       } catch (error) {
         this.unpaidLoading = false;
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line

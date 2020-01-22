@@ -205,7 +205,7 @@ export default {
       } catch (error) {
         this.isLoading = false;
         this.$swal({
-          type: "error",
+          icon: "error",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line
@@ -221,7 +221,7 @@ export default {
 
         if (statusText !== "OK" || data.status !== "success") {
           this.$swal({
-            type: "error",
+            icon: "error",
             title: data.msg
           });
           throw new Error(statusText);
@@ -235,7 +235,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: data.msg,
           text: ""
         });
@@ -254,7 +254,7 @@ export default {
 
         if (statusText !== "OK" || data.status !== "success") {
           this.$swal({
-            type: "error",
+            icon: "error",
             title: data.msg
           });
           throw new Error(statusText);
@@ -276,7 +276,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: data.msg,
           text: ""
         });
@@ -293,7 +293,7 @@ export default {
 
         if (statusText !== "OK" || data.status !== "success") {
           this.$swal({
-            type: "error",
+            icon: "error",
             title: data.msg
           });
           throw new Error(statusText);
@@ -338,7 +338,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: data.msg
           });
         } else {
@@ -367,7 +367,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: data.msg
           });
         } else {
@@ -399,7 +399,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: "未找到會員",
             text: ""
           });

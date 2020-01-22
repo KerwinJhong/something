@@ -126,7 +126,7 @@ export default {
         this.processing = true;
         if (this.newTagName.trim() === "") {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "名稱不可空白"
           });
           return;
@@ -153,7 +153,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: "成功新增標籤",
           text: ""
         });
@@ -163,7 +163,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "無法新增標籤，請稍後再試",
           text: ""
         });
@@ -214,7 +214,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "無法更新標籤，請稍後再試",
           text: ""
         });
@@ -238,7 +238,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: "成功刪除標籤",
           text: ""
         });
@@ -248,7 +248,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "無法刪除標籤，請稍後再試",
           text: ""
         });

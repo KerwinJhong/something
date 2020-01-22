@@ -168,7 +168,7 @@ export default {
       } catch (error) {
         this.isLoading = false;
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line
@@ -192,7 +192,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: "未找到會員",
             text: ""
           });
@@ -299,7 +299,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: data.msg
           });
         } else {

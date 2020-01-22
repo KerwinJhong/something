@@ -360,14 +360,14 @@ export default {
           !this.user.passwordCheck
         ) {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "請填完所有必須資料"
           });
           return;
         }
         if (this.user.password !== this.user.passwordCheck) {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "密碼驗證不相同"
           });
           return;
@@ -391,7 +391,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: data.msg
         });
 
@@ -399,7 +399,7 @@ export default {
         this.isProcessing = false;
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         this.isProcessing = false;

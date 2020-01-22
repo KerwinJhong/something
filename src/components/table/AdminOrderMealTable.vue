@@ -71,7 +71,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: "未找到會員",
             text: ""
           });
@@ -92,7 +92,7 @@ export default {
       this.$swal
         .fire({
           title: "<h1>請選擇數量</h1>",
-          type: "info",
+          icon: "info",
           input: "number",
           html: "",
           showCloseButton: true,
@@ -114,7 +114,7 @@ export default {
               position: "top",
               showConfirmButton: false,
               timer: 3000,
-              type: "success",
+              icon: "success",
               title: "成功新增餐點",
               text: ""
             });
@@ -124,7 +124,7 @@ export default {
               position: "top",
               showConfirmButton: false,
               timer: 3000,
-              type: "warning",
+              icon: "warning",
               title: "未新增餐點",
               text: ""
             });

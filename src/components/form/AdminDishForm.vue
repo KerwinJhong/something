@@ -272,7 +272,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "找不到菜單，請稍後再試",
           text: ""
         });
@@ -293,7 +293,7 @@ export default {
             position: "top",
             showConfirmButton: false,
             timer: 3000,
-            type: "warning",
+            icon: "warning",
             title: "未找到相關標籤",
             text: ""
           });
@@ -337,7 +337,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "請填寫餐點名稱",
           text: ""
         });
@@ -348,7 +348,7 @@ export default {
           position: "top",
           showConfirmButton: false,
           timer: 3000,
-          type: "warning",
+          icon: "warning",
           title: "請選擇餐點類別",
           text: ""
         });

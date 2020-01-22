@@ -83,7 +83,7 @@ export default {
       } catch (error) {
         this.loadedDish = false;
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line
@@ -102,12 +102,12 @@ export default {
         this.dishes = this.dishes.filter(dish => dish.id !== dishId);
 
         this.$swal({
-          type: "success",
+          icon: "success",
           title: data.msg
         });
       } catch (error) {
         this.$swal({
-          type: "warning",
+          icon: "warning",
           title: "無法取得資料，請稍後再試"
         });
         // eslint-disable-next-line

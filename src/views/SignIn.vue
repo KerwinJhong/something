@@ -73,7 +73,7 @@ export default {
 
         if (!this.account || !this.password) {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "帳號與密碼不可空白"
           });
           this.isProcessing = false;
@@ -82,7 +82,7 @@ export default {
 
         // send log in form to API
         const response = await adminAuthorizationAPI.signIn({
-          account: this.account,
+          username: this.account,
           password: this.password
         });
 
@@ -99,7 +99,7 @@ export default {
 
         if (data.user.isValid === false) {
           this.$swal({
-            type: "warning",
+            icon: "warning",
             title: "帳號已被停權，請連繫管理者!"
           });
           this.isProcessing = false;
@@ -116,7 +116,7 @@ export default {
           position: "top-end",
           showConfirmButton: false,
           timer: 3000,
-          type: "success",
+          icon: "success",
           title: "成功登入",
           text: ""
         });
@@ -125,7 +125,7 @@ export default {
         this.isProcessing = false;
 
         this.$swal({
-          type: "error",
+          icon: "warning",
           title: "Oops...",
           text: "請確認您的帳號密碼",
           footer: '<a href="/signup">建立帳號?</a>'
