@@ -36,6 +36,7 @@ import Spinner from "../../components/spinner/Spinner";
 import adminOrderAPI from "../../apis/admin/order";
 
 export default {
+  name: "AdminDayOrders",
   components: {
     AdminNavbarTop,
     AdminNavbarBottm,
@@ -95,8 +96,8 @@ export default {
       }
     },
     async afterDeleteOrder(orderId) {
+      this.isProcessing = true;
       try {
-        this.isProcessing = true;
         const response = await adminOrderAPI.orders.delete(orderId);
         const { data, statusText } = response;
         if (statusText !== "OK" || data.status !== "success") {

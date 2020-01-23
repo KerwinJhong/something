@@ -18,9 +18,9 @@
                 <button
                   v-if="order.state !== `paid`"
                   class="btn btn-danger col"
-                  :disabled="isProcessing"
+                  :disabled="processing"
                   @click.stop.prevent="deleteOrder(order.id)"
-                >{{ this.isProcessing ? "處理中..." : "刪除" }}</button>
+                >{{ processing ? "處理中..." : "刪除" }}</button>
               </div>
             </th>
           </tr>
@@ -89,7 +89,7 @@ import { timeFromFilter, fromNowFilter } from "../../utils/mixins";
 export default {
   mixins: [timeFromFilter, fromNowFilter],
   props: {
-    isProcessing:{
+    isProcessing: {
       type: Boolean
     },
     initialOrders: {
@@ -107,6 +107,7 @@ export default {
       memo: "",
       quantity: 0,
       amount: 0,
+      processing: this.isProcessing,
       stateBtn: this.stateButton
     };
   },
@@ -126,6 +127,9 @@ export default {
         ...this.orders,
         ...orders
       };
+    },
+    isProcessing(processing) {
+      return (this.processing = processing);
     },
     stateButton(stateBtn) {
       this.stateBtn = {
