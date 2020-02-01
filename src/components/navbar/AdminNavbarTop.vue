@@ -1,9 +1,9 @@
 <template>
-  <nav class="text-right">
+  <nav class="text-right border border-secondary border-top-0 border-right-0 border-left-0">
     <h1 class="d-inline float-left">{{this.initialTitle}}</h1>
 
     <p class="d-inline-block text-capitalize mr-3">Hi,{{user.name}}</p>
-    <router-link :to="{name: 'admin-dash-board'}" class="mr-3">儀錶板</router-link>
+    <router-link :to="{name: 'admin-dashboard-pieChart'}" class="mr-3">儀錶板</router-link>
     <router-link
       :to="{name: 'admin-day-orders', query: { state: this.pending }}"
       class="mr-3"
@@ -17,8 +17,8 @@
         <img class="userImg" :src="user.avatar" alt />
       </div>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuUser">
-        <router-link class="dropdown-item" :to="{name: 'admin-profile-edit'}">編輯會員資料</router-link>
-        <router-link class="dropdown-item" :to="{name: 'admin-password-edit'}">設定新密碼</router-link>
+        <router-link class="dropdown-item" :to="{name: 'admin-profile'}">編輯會員資料</router-link>
+        <router-link class="dropdown-item" :to="{name: 'admin-password'}">設定新密碼</router-link>
       </div>
     </div>
     <button type="button" class="btn btn-sm btn-warning my-2 my-sm-0" @click="logout">登出</button>
@@ -27,8 +27,10 @@
 
 <script>
 import adminOrderAPI from "../../apis/admin/order";
+import io from "socket.io-client";
 
 export default {
+  name: "AdminNavbarTop",
   props: {
     initialTitle: {
       type: String
@@ -43,13 +45,27 @@ export default {
       unpaidLength: 0,
       pendingLoading: true,
       unpaidLoading: true,
-      isConnected: false
+      isConnected: false,
+      connection: "no connection",
+      // socket: io("http://localhost:3000")
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   created() {
     this.user = this.$store.state.currentUser;
   },
-  mounted() {},
+  mounted() {
+    // socket
+    this.socket.on("status", data => {
+      //this.isConnected = true;
+      this.connection = data;
+    });
+    this.socket.on("realtime", data => {
+      this.pendingLength = data.pending;
+      this.unpaidLength = data.unpaid;
+      // this.socket.disconnect();
+    });
+  },
   methods: {
     logout() {
       this.$store.commit("revokeAuthentication");

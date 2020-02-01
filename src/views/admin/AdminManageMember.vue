@@ -126,13 +126,14 @@
 </template>
 
 <script>
-import AdminNavbarTop from "../../components/navbar/AdminNavbarTop";
-import AdminNavbarBottm from "../../components/navbar/AdminNavbarBottm";
-import AdminMemberTable from "../../components/table/AdminMemberTable";
-import AdminMemberForm from "../../components/form/AdminMemberForm";
-import Spinner from "../../components/spinner/Spinner";
+import AdminNavbarTop from "../../components/Navbar/AdminNavbarTop";
+import AdminNavbarBottm from "../../components/Navbar/AdminNavbarBottm";
+import AdminMemberTable from "../../components/Table/AdminMemberTable";
+import AdminMemberForm from "../../components/Form/AdminMemberForm";
+import Spinner from "../../components/Spinner/Spinner";
 import adminMemberAPI from "../../apis/admin/member";
 import adminUserAPI from "../../apis/admin/user";
+import io from "socket.io-client";
 
 export default {
   name: "AdminManageMember",
@@ -156,7 +157,8 @@ export default {
       showProfile: false,
       searchResultShow: false,
       isProcessing: false,
-      isLoading: true
+      isLoading: true,
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   computed: {
@@ -167,13 +169,29 @@ export default {
       return this.currPage + 1 > this.totalPage ? null : this.currPage + 1;
     },
     leftTableUsers: function() {
-      return this.users.slice(0, 11);
+      let categoriesLength = this.users.length - 1;
+      let box = [];
+      for (let i = 0; i <= categoriesLength; i++) {
+        if (i === 0 || i % 2 === 0) {
+          box.push(this.users[i]);
+        }
+      }
+      return box;
     },
     rightTableUsers: function() {
-      return this.users.slice(11, 22);
+      let categoriesLength = this.users.length - 1;
+      let box = [];
+      for (let i = 0; i <= categoriesLength; i++) {
+        if (i % 2 !== 0) {
+          box.push(this.users[i]);
+        }
+      }
+      return box;
     }
   },
   created() {
+    // add socket
+    this.socket.emit("init");
     const { page = 1 } = this.$route.query;
     this.fetchProfiles({ page });
   },
@@ -319,6 +337,15 @@ export default {
               role: data.user.role
             };
           }
+        });
+
+        this.$swal({
+          toast: true,
+          position: "top",
+          showConfirmButton: false,
+          timer: 3000,
+          icon: "success",
+          title: data.msg
         });
       } catch (error) {
         // eslint-disable-next-line

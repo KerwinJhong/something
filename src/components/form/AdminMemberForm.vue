@@ -123,7 +123,7 @@
               autofocus
               v-show="this.initialEditUser"
             />
-            <small v-if="$v.user.Profile.name.$error" class="text-danger">長度介於 1 - 30</small>
+            <small v-if="$v.user.Profile.name.$error" class="text-danger">長度介於 1 - 20</small>
           </div>
 
           <div class="form-group col-6">
@@ -132,8 +132,8 @@
             <input
               @input="$v.user.phone.$touch"
               :disabled="isProcessing"
-              maxlength="15"
-              minlength="8"
+              maxlength="11"
+              minlength="9"
               id="phone"
               v-model="user.phone"
               type="number"
@@ -144,7 +144,7 @@
               autofocus
               v-show="this.initialEditUser"
             />
-            <small v-if="$v.user.phone.$error" class="text-danger">長度介於 8 - 15</small>
+            <small v-if="$v.user.phone.$error" class="text-danger">長度須為 10</small>
           </div>
 
           <div class="form-group col-6" v-show="!this.initialCreateMember">
@@ -152,7 +152,7 @@
             <div v-show="!this.initialEditUser">{{ user.account }}</div>
             <input
               maxlength="30"
-              minlength="6"
+              minlength="5"
               id="account"
               v-model="user.account"
               type="text"
@@ -303,8 +303,8 @@ export default {
       },
       phone: {
         required,
-        minLength: minLength(8),
-        maxLength: maxLength(15)
+        minLength: minLength(10),
+        maxLength: maxLength(10)
       },
       password: {
         required,

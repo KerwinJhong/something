@@ -1,5 +1,5 @@
 <template>
-  <div class="box-center" style="background-color: #F0E8DD;height: 100%;">
+  <div class="box-center" style="background-color: #F0E8DD;height: 100vh;">
     <div class="container border border-secondary" style="width: 360px;border-radius: 5%;">
       <h1 class="py-3 text-center">設定新密碼</h1>
       <form @submit.stop.prevent="handleSubmit">
@@ -126,10 +126,6 @@ export default {
         });
         const { data, statusText } = response;
         if (statusText !== "OK") {
-          this.$swal({
-            icon: "warning",
-            title: data.msg
-          });
           throw new Error(statusText);
         }
 
@@ -141,9 +137,14 @@ export default {
           icon: "success",
           title: data.msg
         });
-        this.isProcessing = false;
+        this.$store.commit("revokeAuthentication");
+        this.$router.push("/signin");
       } catch (error) {
         this.isProcessing = false;
+        this.$swal({
+          icon: "warning",
+          title: "密碼錯誤，請確認密碼"
+        });
         // eslint-disable-next-line
         console.log("error", error);
       }

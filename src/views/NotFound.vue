@@ -1,9 +1,16 @@
 <template>
   <div class="bg-image text-center">
     <h1 class="pt-5">Oops! Page not found</h1>
-    <a class="btn btn-success mt-5 p-4" href="#" @click.stop.prevent="$router.back()">回上一頁</a>
+    <button class="btn btn-success mt-5 p-4" href="#" @click.stop.prevent="$router.back()">回上一頁</button>
+    <router-link :to="{name: 'sign-in'}" class="btn btn-success ml-3 mt-5 p-4">登入</router-link>
   </div>
 </template>
+
+<script>
+export default {
+  name: "NotFound"
+};
+</script>
 
 <style scoped>
 .bg-image {

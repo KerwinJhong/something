@@ -10,8 +10,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="category in this.initialCategory" :key="category.id">
-          <td class="text-center">{{ category.id }}</td>
+        <tr
+          v-for="category in this.initialCategory"
+          :key="category.id"
+          @click.stop.prevent="fetchData(category.id)"
+        >
+          <td class="text-center">{{ category.indexId }}</td>
           <td width="60%">
             <div class="category-name">{{ category.name }}</div>
           </td>
@@ -29,9 +33,18 @@
 
 <script>
 export default {
+  name: "AdminDashBoardTable",
   props: {
     initialCategory: {
       type: Array
+    },
+    initialType: {
+      type: String,
+      default: ""
+    },
+    initialIsProcessing: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -48,7 +61,18 @@ export default {
       return add;
     }
   },
-  methods: {},
+  methods: {
+    fetchData(categoryId) {
+      if (this.initialIsProcessing) {
+        return;
+      } else {
+        this.$emit("after-fetch-data", {
+          type: this.initialType,
+          id: categoryId
+        });
+      }
+    }
+  },
   watch: {
     initialCategory(categories) {
       this.categories = {

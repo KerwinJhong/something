@@ -6,14 +6,14 @@
     column-width="2"
     class="masonry-container"
   >
-    <div v-masonry-tile class="item bg-white" v-for="order in orders" :key="order.id">
+    <div v-masonry-tile class="item bg-white shadow-lg" v-for="order in orders" :key="order.id">
       <table class="table table-striped table-hover mb-0">
         <thead>
           <tr>
             <th>
               <div class="row">
                 <small class="col">{{order.createdAt | fromNow}}</small>
-                <h4 class="col text-center">{{order.id}}</h4>
+                <h4 class="col text-center">{{order.flowId}}</h4>
                 <div v-if="order.state === `paid`" class="col"></div>
                 <button
                   v-if="order.state !== `paid`"
@@ -88,6 +88,7 @@ import { timeFromFilter, fromNowFilter } from "../../utils/mixins";
 
 export default {
   mixins: [timeFromFilter, fromNowFilter],
+  name: "AdminDayOrderTable",
   props: {
     isProcessing: {
       type: Boolean

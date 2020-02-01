@@ -1,11 +1,11 @@
 <template>
-  <div class="row d-flex justify-content-center" style="background-color: #F0E8DD;height: 100%;">
-    <h1 class="col-12 pt-3 text-center">Sign Up</h1>
+  <div class="row d-flex justify-content-center bg-color">
+    <h1 class="col-12 py-3 text-center">註冊為新會員</h1>
     <div class="bg-image col-6 max-width"></div>
-    <form class="w-100 col-6 max-width" @submit.stop.prevent="handleSubmit">
+    <form class="w-100 max-width" @submit.stop.prevent="handleSubmit">
       <div class="row">
         <h3 class="col-12 my-3 text-center">會員資料</h3>
-        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.name.$error}">
+        <div class="form-label-group mb-3" :class="{'form-group--error': $v.name.$error}">
           <label for="name">Name</label>
           <input
             @input="$v.name.$touch"
@@ -24,7 +24,7 @@
           <small v-if="$v.name.$error" class="text-danger">長度介於 1 - 20</small>
         </div>
 
-        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.phone.$error}">
+        <div class="form-label-group mb-3" :class="{'form-group--error': $v.phone.$error}">
           <label for="name">Phone</label>
           <input
             @input="$v.phone.$touch"
@@ -40,11 +40,11 @@
             required
             autofocus
           />
-          <small v-if="$v.phone.$error" class="text-danger">長度介於 8 - 15</small>
+          <small v-if="$v.phone.$error" class="text-danger">長度須為 10</small>
         </div>
 
         <div
-          class="form-label-group mb-3 col-6"
+          class="form-label-group mb-3"
           :class="{'form-group--error': $v.email.$error && !$v.email.$pending}"
         >
           <label for="email">Email</label>
@@ -64,7 +64,7 @@
           <small v-if="!$v.email.required && $v.email.$dirty" class="text-danger">電子信箱必填</small>
         </div>
 
-        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.account.$error}">
+        <div class="form-label-group mb-3" :class="{'form-group--error': $v.account.$error}">
           <label for="name">Account</label>
           <input
             @input="$v.account.$touch"
@@ -80,10 +80,10 @@
             required
             autofocus
           />
-          <small v-show="$v.account.$error" class="text-danger">長度介於 6 - 30</small>
+          <small v-show="$v.account.$error" class="text-danger">長度介於 5 - 30</small>
         </div>
 
-        <div class="form-label-group mb-3 col-6" :class="{'form-group--error': $v.password.$error}">
+        <div class="form-label-group mb-3" :class="{'form-group--error': $v.password.$error}">
           <label for="password">Password</label>
           <input
             @input="$v.password.$touch"
@@ -100,13 +100,10 @@
             autofocus
             autocomplete
           />
-          <small v-if="$v.password.$error" class="text-danger">長度介於 8 -30</small>
+          <small v-if="$v.password.$error" class="text-danger">長度介於 8 - 30</small>
         </div>
 
-        <div
-          class="form-label-group mb-3 col-6"
-          :class="{'form-group--error': $v.passwordCheck.$error}"
-        >
+        <div class="form-label-group mb-3" :class="{'form-group--error': $v.passwordCheck.$error}">
           <label for="password-check">Password Check</label>
           <input
             @input="$v.passwordCheck.$touch"
@@ -167,18 +164,18 @@ export default {
   validations: {
     account: {
       required,
-      minLength: minLength(6),
+      minLength: minLength(5),
       maxLength: maxLength(30)
+    },
+    phone: {
+      required,
+      minLength: minLength(10),
+      maxLength: maxLength(10)
     },
     name: {
       required,
       minLength: minLength(1),
       maxLength: maxLength(20)
-    },
-    phone: {
-      required,
-      minLength: minLength(8),
-      maxLength: maxLength(15)
     },
     email: {
       required,
@@ -253,13 +250,51 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+h1 {
+  border-radius: 0 0 50% 50%;
+  @include response(xs) {
+    background-color: rgb(240, 232, 221);
+  }
+}
+.bg-color {
+  min-height: 100%;
+  @include setBackground(
+    "https://images.pexels.com/photos/2638019/pexels-photo-2638019.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  );
+  @include response(md) {
+    background-image: none;
+    background-color: #f0e8dd;
+  }
+}
 .bg-image {
-  background-image: url(https://images.pexels.com/photos/2638019/pexels-photo-2638019.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 120px 0 0 120px;
+  display: none;
+  @include response(md) {
+    @include setBackground(
+      "https://images.pexels.com/photos/2638019/pexels-photo-2638019.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    );
+    border-radius: 120px 0 0 120px;
+    display: block;
+  }
+}
+form {
+  flex: 0 0 100%;
+  max-width: 100%;
+  @include response(md) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+  }
+}
+.form-label-group {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
+  @include response(lg) {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
 }
 .max-width {
   max-width: 450px;
@@ -267,9 +302,11 @@ export default {
   border: 1px solid #dee2e6;
 }
 .form-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  @include response(lg) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {

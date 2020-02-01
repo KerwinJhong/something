@@ -7,8 +7,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     currentUser: {
-      id: -1,
-      account: "",
       phone: "",
       role: "",
       name: "",
@@ -19,7 +17,6 @@ export default new Vuex.Store({
   },
   mutations: {
     setCurrentUser(state, currentUser) {
-
       state.currentUser = {
           ...state.currentUser,
           // 將 API 取得的 currentUser 覆蓋掉 Vuex state 中的 currentUser
@@ -49,8 +46,6 @@ export default new Vuex.Store({
         }
 
         commit('setCurrentUser', {
-          id: data.id,
-          account: data.account,
           phone: data.phone,
           role: data.role,
           name: data.name,

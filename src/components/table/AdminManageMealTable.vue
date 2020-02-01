@@ -10,7 +10,7 @@
     </ul>
     <div class="card-columns border border-dark meal">
       <h1 v-if="this.initialDishes.length < 1" class="warningText">新增一些餐點吧!</h1>
-      <div v-else v-for="dish in dishes" :key="dish.id" class="card">
+      <div v-else v-for="dish in dishes" :key="dish.id" class="card shadow-sm">
         <div class="card-header d-flex justify-content-between p-0">
           <h5 class="pt-1">{{ dish.name }}</h5>
           <div class="dropdown dropleft">
@@ -50,6 +50,7 @@
 
 <script>
 export default {
+  name: "AdminManageMealTable",
   props: {
     initialCategories: {
       type: Array
@@ -92,7 +93,7 @@ export default {
 
 <style scoped>
 .meal {
-  height: calc(100vh - 210px);
+  height: calc(100vh - 190px);
   overflow: auto;
 }
 .dropdown-menu {

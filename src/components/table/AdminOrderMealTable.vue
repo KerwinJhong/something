@@ -9,14 +9,14 @@
         >{{ category.name }}</router-link>
       </li>
     </ul>
-    <div class="border border-dark meal overflow-auto">
+    <div class="border border-dark meal overflow-auto shadow-lg rounded-lg">
       <h1 v-if="!dishes.length > 0" class="box-center">新增一些餐點吧!</h1>
       <div class="card-columns">
         <div
           v-for="dish in dishes"
           :key="dish.id"
           @click.stop.prevent="addToList(dish.id,dish.name,dish.price)"
-          class="card dish border border-dark"
+          class="card dish border border-dark shadow-lg"
         >
           <h5 class="dishName">{{ dish.name }}</h5>
           <div class="row">
@@ -38,6 +38,7 @@
 import mainUserAPI from "../../apis/admin/user";
 
 export default {
+  name: "AdminOrderMealTable",
   props: {
     initialCategories: {
       type: Array

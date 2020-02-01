@@ -19,15 +19,17 @@
 </template>
 
 <script>
-import AdminNavbarTop from "../../components/navbar/AdminNavbarTop";
-import AdminNavbarBottm from "../../components/navbar/AdminNavbarBottm";
-import AdminManageMealTable from "../../components/table/AdminManageMealTable";
-import AdminManageTabs from "../../components/tabs/AdminManageTabs";
-import Spinner from "../../components/spinner/Spinner";
+import AdminNavbarTop from "../../components/Navbar/AdminNavbarTop";
+import AdminNavbarBottm from "../../components/Navbar/AdminNavbarBottm";
+import AdminManageMealTable from "../../components/Table/AdminManageMealTable";
+import AdminManageTabs from "../../components/Tabs/AdminManageTabs";
+import Spinner from "../../components/Spinner/Spinner";
 import adminDishAPI from "../../apis/admin/dish";
 import adminCategoryAPI from "../../apis/admin/category";
+import io from "socket.io-client";
 
 export default {
+  name: "AdminManageMeal",
   components: {
     AdminNavbarTop,
     AdminNavbarBottm,
@@ -41,11 +43,14 @@ export default {
       categories: [],
       dishes: [],
       loadedCategories: true,
-      loadedDish: true
+      loadedDish: true,
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   computed: {},
   created() {
+    // add socket
+    this.socket.emit("init");
     const { categoryId = 1 } = this.$route.query;
     this.fetchCategories();
     this.fetchDishes({ categoryId });

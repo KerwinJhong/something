@@ -4,7 +4,10 @@
     <Spinner v-if="isLoading" />
     <template v-else>
       <div class="row" style="height:100%;">
-        <div class="col-8 border border-dark p-0" style="height:calc(100vh - 114px);">
+        <div
+          class="col-8 border border-dark border-right-0 border-top-0 p-0"
+          style="height:calc(100vh - 100px);"
+        >
           <div>
             <div class="container row mt-2">
               <div class="col-auto mr-auto px-0">
@@ -45,7 +48,7 @@
             />
           </div>
         </div>
-        <div class="col-4 border border-dark p-0" style="height:calc(100vh - 114px);">
+        <div class="col-4 border border-dark border-top-0 p-0" style="height:calc(100vh - 100px);">
           <AdminOrderListTable
             :add-dishes="addDishes"
             @after-delete-dish="afterDeleteDish"
@@ -89,15 +92,16 @@
 </template>
 
 <script>
-import AdminNavbarTop from "../../components/navbar/AdminNavbarTop";
-import AdminNavbarBottm from "../../components/navbar/AdminNavbarBottm";
-import AdminOrderMealTable from "../../components/table/AdminOrderMealTable";
-import AdminOrderListTable from "../../components/table/AdminOrderListTable";
-import AdminMemberForm from "../../components/form/AdminMemberForm";
-import Spinner from "../../components/spinner/Spinner";
+import AdminNavbarTop from "../../components/Navbar/AdminNavbarTop";
+import AdminNavbarBottm from "../../components/Navbar/AdminNavbarBottm";
+import AdminOrderMealTable from "../../components/Table/AdminOrderMealTable";
+import AdminOrderListTable from "../../components/Table/AdminOrderListTable";
+import AdminMemberForm from "../../components/Form/AdminMemberForm";
+import Spinner from "../../components/Spinner/Spinner";
 import adminDishAPI from "../../apis/admin/dish";
 import adminCategoryAPI from "../../apis/admin/category";
 import adminMemberAPI from "../../apis/admin/member";
+import io from "socket.io-client";
 
 export default {
   name: "AdminOrder",
@@ -129,10 +133,13 @@ export default {
       searchingUser: false,
       searchResultShow: false,
       editUser: false,
-      isLoading: true
+      isLoading: true,
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   created() {
+    // add socket
+    this.socket.emit("init");
     const { categoryId = 1 } = this.$route.query;
     this.fetchDishes({ categoryId });
     this.fetchCategories();
@@ -177,7 +184,7 @@ export default {
     },
     async searchUser() {
       try {
-        this.searchingUser = true
+        this.searchingUser = true;
         const response = await adminMemberAPI.searchMember({
           phone: this.userPhone
         });
@@ -185,7 +192,7 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-        
+
         if (data.status === "error") {
           this.$swal({
             toast: true,
@@ -196,15 +203,15 @@ export default {
             title: "未找到會員",
             text: ""
           });
-          this.searchingUser = false
+          this.searchingUser = false;
         } else {
-          this.getMemberOrders(data.user.id)
+          this.getMemberOrders(data.user.id);
           this.user = data.user;
           this.searchResultShow = true;
-          this.searchingUser = false
+          this.searchingUser = false;
         }
       } catch (error) {
-        this.searchingUser = false
+        this.searchingUser = false;
         // eslint-disable-next-line
         console.log("error", error);
       }
@@ -236,6 +243,8 @@ export default {
       };
       this.userName = "";
       this.dishPK = 0;
+      // add socket emit here
+      this.socket.emit("addPending");
     },
     afterAddUser() {
       this.userName = this.user.Profile.name;
@@ -292,7 +301,7 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-        
+
         if (data.status === "error") {
           this.$swal({
             toast: true,
@@ -303,7 +312,7 @@ export default {
             title: data.msg
           });
         } else {
-          this.orders = data.orders
+          this.orders = data.orders;
         }
       } catch (error) {
         // eslint-disable-next-line

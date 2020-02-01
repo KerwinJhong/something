@@ -6,28 +6,29 @@
     <div v-else class="dash-board">
       <div class="border-bottom">
         <router-link
-          class="btn btn-outline-primary m-2"
-          :to="{ name: 'admin-dash-board', 
+          class="btn btn-outline-primary ml-2"
+          :to="{ name: 'admin-dashboard-pieChart', 
         query: {range: `weekly`}}"
         >前七天</router-link>
         <router-link
-          class="btn btn-outline-primary"
-          :to="{ name: 'admin-dash-board', 
+          class="btn btn-outline-primary m-2"
+          :to="{ name: 'admin-dashboard-pieChart', 
         query: {range: `monthly`}}"
         >前一個月</router-link>
+        <router-link class="btn btn-outline-primary" :to="{ name: 'admin-dashboard-lineChart'}">曲線圖</router-link>
       </div>
       <div class="row justify-content-around">
-        <div class="col-4 border border-secondary rounded">
+        <div class="col-4 border border-secondary rounded shadow-lg">
           <h3 class="text-center mt-3">HotProducts</h3>
           <PieChart class="my-3" :initial-data="hotProducts" />
           <AdminDashBoardTable :initial-category="hotProducts" />
         </div>
-        <div class="col-4 border border-secondary rounded">
+        <div class="col-4 border border-secondary rounded shadow-lg">
           <h3 class="text-center mt-3">HotTags</h3>
           <PieChart class="my-3" :initial-data="hotTags" />
           <AdminDashBoardTable :initial-category="hotTags" />
         </div>
-        <div class="col-4 border border-secondary rounded">
+        <div class="col-4 border border-secondary rounded shadow-lg">
           <h3 class="text-center mt-3">HotMembers</h3>
           <PieChart class="my-3" :initial-data="hotMembers" />
           <AdminDashBoardTable :initial-category="hotMembers" />
@@ -39,17 +40,16 @@
 </template>
 
 <script>
-//import Datepicker from "vuejs-datepicker";
-//import { en, zh } from "vuejs-datepicker/dist/locale";
-import AdminNavbarTop from "../../components/navbar/AdminNavbarTop";
-import AdminNavbarBottm from "../../components/navbar/AdminNavbarBottm";
-import PieChart from "../../components/chart/PieChart";
-import AdminDashBoardTable from "../../components/table/AdminDashBoardTable";
-import Spinner from "../../components/spinner/Spinner";
+import AdminNavbarTop from "../../components/Navbar/AdminNavbarTop";
+import AdminNavbarBottm from "../../components/Navbar/AdminNavbarBottm";
+import PieChart from "../../components/Chart/PieChart";
+import AdminDashBoardTable from "../../components/Table/AdminDashBoardTable";
+import Spinner from "../../components/Spinner/Spinner";
 import adminDashboardAPI from "../../apis/admin/dashboard";
+import io from "socket.io-client";
 
 export default {
-  name: "AdminDashBoard",
+  name: "AdminDashBoardPieChart",
   components: {
     AdminNavbarTop,
     AdminNavbarBottm,
@@ -68,10 +68,12 @@ export default {
       hotMembers: [],
       startDay: "",
       endDay: "",
-      isLoading: true
+      isLoading: true,
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   created() {
+    this.socket.emit("init");
     const { range = "weekly" } = this.$route.query;
     this.fetchDashboard({ range });
     //this.fetchss({ id: 1 });
@@ -94,8 +96,7 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-// eslint-disable-next-line
-        console.log("data", data);
+
         for (var productprop in data.hotProducts) {
           this.hotProducts.push(data.hotProducts[productprop]);
         }
@@ -106,13 +107,13 @@ export default {
           this.hotMembers.push(data.hotMembers[memberrop]);
         }
 
-        this.hotProducts.push({name:"其他",count:data.otherProducts});
-        this.hotTags.push({name:"其他",count:data.otherTags});
-        this.hotMembers.push({name:"其他",count:data.otherMembers});
+        this.hotProducts.push({ name: "其他", count: data.otherProducts });
+        this.hotTags.push({ name: "其他", count: data.otherTags });
+        this.hotMembers.push({ name: "其他", count: data.otherMembers });
 
-        this.hotProducts.map((e, index) => (e.id = index + 1));
-        this.hotTags.map((e, index) => (e.id = index + 1));
-        this.hotMembers.map((e, index) => (e.id = index + 1));
+        this.hotProducts.map((e, index) => (e.indexId = index + 1));
+        this.hotTags.map((e, index) => (e.indexId = index + 1));
+        this.hotMembers.map((e, index) => (e.indexId = index + 1));
 
         this.isLoading = false;
       } catch (error) {
@@ -151,5 +152,9 @@ export default {
 .dash-board {
   height: calc(100vh - 110px);
   overflow-y: auto;
+}
+.small {
+  padding-right: 70px;
+  padding-left: 70px;
 }
 </style>

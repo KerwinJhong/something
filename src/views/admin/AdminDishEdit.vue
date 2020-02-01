@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AdminDishForm from "../../components/form/AdminDishForm";
+import AdminDishForm from "../../components/Form/AdminDishForm";
 import adminDishAPI from "../../apis/admin/dish";
 
 export default {

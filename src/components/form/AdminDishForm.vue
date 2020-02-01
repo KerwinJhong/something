@@ -354,14 +354,7 @@ export default {
         });
         return;
       }
-
-      let filtration = this.originTags.filter(x => !this.dish.tags.includes(x));
-
-      this.dish.removeTags = filtration;
-
-      if (this.dishTitle !== "新增菜單") {
-        this.dish.addTags = this.dish.tags;
-      }
+      
       this.$emit("after-submit", this.dish);
     }
   }

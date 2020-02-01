@@ -49,14 +49,16 @@
 </template>
 
 <script>
-import AdminNavbarTop from "../../components/navbar/AdminNavbarTop";
-import AdminNavbarBottm from "../../components/navbar/AdminNavbarBottm";
-import AdminManageTabs from "../../components/tabs/AdminManageTabs";
-import AdminCategoryTable from "../../components/table/AdminCategoryTable";
+import AdminNavbarTop from "../../components/Navbar/AdminNavbarTop";
+import AdminNavbarBottm from "../../components/Navbar/AdminNavbarBottm";
+import AdminManageTabs from "../../components/Tabs/AdminManageTabs";
+import AdminCategoryTable from "../../components/Table/AdminCategoryTable";
+import Spinner from "../../components/Spinner/Spinner";
 import adminCategoryAPI from "../../apis/admin/category";
-import Spinner from "../../components/spinner/Spinner";
+import io from "socket.io-client";
 
 export default {
+  name: "AdminManageCategories",
   components: {
     AdminNavbarTop,
     AdminNavbarBottm,
@@ -70,7 +72,8 @@ export default {
       newCategoryName: "",
       categories: [],
       isLoading: true,
-      isProcessing: false
+      isProcessing: false,
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   computed: {
@@ -96,6 +99,8 @@ export default {
     }
   },
   created() {
+    // add socket
+    this.socket.emit("init");
     this.fetchcategories();
   },
   methods: {

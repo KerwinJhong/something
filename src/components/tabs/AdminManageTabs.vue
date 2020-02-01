@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  name: "AdminManageTabs",
   data() {
     return {
       categories: [

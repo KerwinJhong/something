@@ -18,7 +18,8 @@ html {
   height: 100%;
 }
 body {
-  background-color: #f4f7f8;
+  // background-color: #f4f7f8;
+  background-color: rgb(240, 232, 221);
   color: color(secondary);
   height: 100%;
 }

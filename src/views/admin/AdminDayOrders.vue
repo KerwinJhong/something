@@ -29,11 +29,12 @@
 </template>
 
 <script>
-import AdminNavbarTop from "../../components/navbar/AdminNavbarTop";
-import AdminNavbarBottm from "../../components/navbar/AdminNavbarBottm";
-import AdminDayOrderTable from "../../components/table/AdminDayOrderTable";
-import Spinner from "../../components/spinner/Spinner";
+import AdminNavbarTop from "../../components/Navbar/AdminNavbarTop";
+import AdminNavbarBottm from "../../components/Navbar/AdminNavbarBottm";
+import AdminDayOrderTable from "../../components/Table/AdminDayOrderTable";
+import Spinner from "../../components/Spinner/Spinner";
 import adminOrderAPI from "../../apis/admin/order";
+import io from "socket.io-client";
 
 export default {
   name: "AdminDayOrders",
@@ -55,7 +56,8 @@ export default {
       orders: [],
       stateButton: {},
       isProcessing: false,
-      isLoading: true
+      isLoading: true,
+      socket: io("https://recusplatform.herokuapp.com/")
     };
   },
   methods: {
@@ -108,6 +110,8 @@ export default {
           icon: "success",
           title: data.msg
         });
+        // add socket
+        this.socket.emit("deleteOrder");
         this.isProcessing = false;
       } catch (error) {
         this.$swal({
@@ -130,6 +134,8 @@ export default {
         this.orders = this.orders.filter(
           order => order.id !== stateData.orderId
         );
+        // add socket
+        this.socket.emit("switchState");
       } catch (error) {
         this.$swal({
           icon: "warning",
@@ -153,6 +159,8 @@ export default {
     }
   },
   created() {
+    // add socket
+    this.socket.emit("init");
     const { state = "pending" } = this.$route.query;
     this.fetchOrders({ state });
   },
@@ -166,7 +174,7 @@ export default {
 
 <style scoped>
 .alist {
-  height: calc(100vh - 150px);
+  height: calc(100vh - 140px);
   overflow: auto;
 }
 .warningText {

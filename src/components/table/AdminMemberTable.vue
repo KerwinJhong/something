@@ -30,7 +30,7 @@
             </td>
             <td width="20%">
               <button
-                v-if="user.id !== currentUser"
+                v-if="user.Profile.name !== currentUser"
                 type="button"
                 class="btn btn-warning text-capitalize"
                 @click.stop.prevent="toggleIsAdmin(user.id)"
@@ -38,7 +38,7 @@
             </td>
             <td width="15%">
               <button
-                v-if="user.id !== currentUser || !user.isValid"
+                v-if="user.Profile.name !== currentUser || !user.isValid"
                 type="button"
                 class="btn btn-danger"
                 @click.stop.prevent="validCheck(user.id)"
@@ -53,6 +53,7 @@
 
 <script>
 export default {
+  name: "AdminMemberTable",
   props: {
     initialUsers: {
       type: Array
@@ -61,7 +62,7 @@ export default {
   data() {
     return {
       users: this.initialUsers,
-      currentUser: this.$store.state.currentUser.id
+      currentUser: this.$store.state.currentUser.name
     };
   },
   methods: {

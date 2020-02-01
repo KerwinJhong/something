@@ -8,7 +8,7 @@ const authentication = {
   isAdmin(to, from, next) {
     const currentUser = store.state.currentUser
     if (currentUser && currentUser.role !== "admin") {
-      next({ name: 'not-found' })
+      next({ name: 'sign-in' })
       return
     }
     next()
@@ -17,7 +17,7 @@ const authentication = {
     const currentUser = store.state.currentUser
       // redirect to 404 if user is not an Member
     if (currentUser && currentUser.role !== 'member') {
-      next({ name: 'not-found' })
+      next({ name: 'sign-in' })
       return
     }
     next()
@@ -28,28 +28,40 @@ const authentication = {
 const routes = [
   // ====================  Member  ====================
   {
-    path: '/member/home',
-    name: 'member-home',
+    path: '/member/orderstate',
+    name: 'member-order-state',
     component: () =>
-      import ('../views/member/MemberHome.vue'),
+      import ('../views/member/MemberOrderState.vue'),
     beforeEnter: authentication.isMember
   }, {
-    path: '/member/meal',
-    name: 'member-meal',
+    path: '/member/menu',
+    name: 'member-menu',
     component: () =>
-      import ('../views/member/MemberMeal.vue'),
+      import ('../views/member/MemberMenu.vue'),
+    beforeEnter: authentication.isMember
+  }, {
+    path: '/member/orderlist',
+    name: 'member-order-list',
+    component: () =>
+      import ('../views/member/MemberOrderList.vue'),
+    beforeEnter: authentication.isMember
+  }, {
+    path: '/member/profile',
+    name: 'member-profile',
+    component: () =>
+      import ('../views/member/MemberProfile.vue'),
     beforeEnter: authentication.isMember
   }, {
     path: '/member/myorders',
-    name: 'member-myorders',
+    name: 'member-my-orders',
     component: () =>
       import ('../views/member/MemberMyOrders.vue'),
     beforeEnter: authentication.isMember
   }, {
-    path: '/member/table',
-    name: 'member-select-table',
+    path: '/member/password',
+    name: 'member-password',
     component: () =>
-      import ('../views/member/MemberSelectTable.vue'),
+      import ('../views/member/MemberPassword.vue'),
     beforeEnter: authentication.isMember
   },
 
@@ -117,22 +129,28 @@ const routes = [
       import ('../views/admin/AdminDishNew.vue'),
     beforeEnter: authentication.isAdmin
   }, {
-    path: '/admin/manage/dashboard',
-    name: 'admin-dash-board',
+    path: '/admin/manage/dashboard/lineChart',
+    name: 'admin-dashboard-lineChart',
     component: () =>
-      import ('../views/admin/AdminDashBoard.vue'),
+      import ('../views/admin/AdminDashBoardLineChart.vue'),
+    beforeEnter: authentication.isAdmin
+  }, {
+    path: '/admin/manage/dashboard/pieChart',
+    name: 'admin-dashboard-pieChart',
+    component: () =>
+      import ('../views/admin/AdminDashBoardPieChart.vue'),
     beforeEnter: authentication.isAdmin
   }, {
     path: '/admin/profile/edit',
-    name: 'admin-profile-edit',
+    name: 'admin-profile',
     component: () =>
-      import ('../views/admin/AdminProfileEdit.vue'),
+      import ('../views/admin/AdminProfile.vue'),
     beforeEnter: authentication.isAdmin
   }, {
-    path: '/admin/password/edit',
-    name: 'admin-password-edit',
+    path: '/admin/password',
+    name: 'admin-password',
     component: () =>
-      import ('../views/admin/AdminPasswordEdit.vue'),
+      import ('../views/admin/AdminPassword.vue'),
     beforeEnter: authentication.isAdmin
   }, {
     path: '*',
@@ -159,7 +177,7 @@ router.beforeEach(async(to, from, next) => {
   }
 
   // 對於不需要驗證 token 的頁面
-  const pathsWithoutAuthentication = ['sign-up']
+  const pathsWithoutAuthentication = ['sign-in', 'sign-up']
   if (pathsWithoutAuthentication.includes(to.name)) {
     next()
     return
@@ -171,9 +189,13 @@ router.beforeEach(async(to, from, next) => {
     return
   }
 
-  // 如果 token 有效則轉址到點餐頁面
-  if (isAuthenticated && to.name === 'sign-in') {
+  if (isAuthenticated && store.state.currentUser.role === 'admin' && to.name === 'sign-in') {
     next('/admin/order')
+    return
+  }
+
+  if (isAuthenticated && store.state.currentUser.role === 'member' && to.name === 'sign-in') {
+    next('/member/menu')
     return
   }
 

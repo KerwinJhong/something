@@ -4,7 +4,7 @@
       <h5 class="col-auto mr-auto px-0">總數：{{this.addDishes.quantity}}件</h5>
       <h5>清單</h5>
     </div>
-    <div class="border border-dark list">
+    <div class="border border-dark list rounded-lg">
       <div
         v-for="dish in this.addDishes.list"
         :key="dish.id"
@@ -47,6 +47,7 @@
 import adminOrderAPI from "../../apis/admin/order";
 
 export default {
+  name: "AdminOrderListTable",
   props: {
     addDishes: {}
   },
@@ -118,6 +119,7 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
+
         this.$emit("after-submit-order");
         this.tableNum = 0;
         this.isTakingAway = 0;
@@ -156,7 +158,7 @@ export default {
 
 <style scoped>
 .list {
-  height: calc(100vh - 350px);
+  height: calc(100vh - 340px);
   overflow: auto;
 }
 .dish {

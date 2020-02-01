@@ -108,7 +108,7 @@ export default {
 
         store.state.isAuthenticated = await store.dispatch("fetchCurrentUser");
 
-        if (data.user.role === "member") this.$router.push("/member/myorders");
+        if (data.user.role === "member") this.$router.push("/member/menu");
         if (data.user.role === "admin") this.$router.push("/admin/order");
 
         this.$swal({
